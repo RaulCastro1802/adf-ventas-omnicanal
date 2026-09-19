@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-sisger-ucb-us-23093"
+		},
+		"sa_omni_canal_accountKey": {
+			"value": ""
+		},
+		"sql_omni_canal_password": {
+			"value": ""
+		},
+		"sa_omni_canal_properties_typeProperties_url": {
+			"value": "https://sasisgerucbventas.dfs.core.windows.net/"
+		},
+		"sql_omni_canal_properties_typeProperties_server": {
+			"value": "sql-sisger-ventas3243.database.windows.net"
+		},
+		"sql_omni_canal_properties_typeProperties_database": {
+			"value": "dbventas"
+		},
+		"sql_omni_canal_properties_typeProperties_userName": {
+			"value": "RaulCastro"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
