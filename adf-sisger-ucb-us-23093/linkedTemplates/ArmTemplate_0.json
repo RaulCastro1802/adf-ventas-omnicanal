@@ -76,6 +76,62 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/calificaciones_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sa_omni_canal",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "csv"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "calificaciones.csv",
+						"fileSystem": "raw"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "calificacion_id",
+						"type": "String"
+					},
+					{
+						"name": "pedido_id",
+						"type": "String"
+					},
+					{
+						"name": "cliente_id",
+						"type": "String"
+					},
+					{
+						"name": "fecha_calificacion",
+						"type": "String"
+					},
+					{
+						"name": "puntuacion",
+						"type": "String"
+					},
+					{
+						"name": "comentario",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sa_omni_canal')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/clientes_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -127,62 +183,6 @@
 					},
 					{
 						"name": "segmento",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sa_omni_canal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/calificaciones_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sa_omni_canal",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "csv"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "calificaciones.csv",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "calificacion_id",
-						"type": "String"
-					},
-					{
-						"name": "pedido_id",
-						"type": "String"
-					},
-					{
-						"name": "cliente_id",
-						"type": "String"
-					},
-					{
-						"name": "fecha_calificacion",
-						"type": "String"
-					},
-					{
-						"name": "puntuacion",
-						"type": "String"
-					},
-					{
-						"name": "comentario",
 						"type": "String"
 					}
 				]
@@ -748,70 +748,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/sucursales_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sa_omni_canal",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "csv"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "sucursales.csv",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "sucursal_id",
-						"type": "String"
-					},
-					{
-						"name": "restaurante_id",
-						"type": "String"
-					},
-					{
-						"name": "nombre_sucursal",
-						"type": "String"
-					},
-					{
-						"name": "ciudad",
-						"type": "String"
-					},
-					{
-						"name": "zona",
-						"type": "String"
-					},
-					{
-						"name": "direccion",
-						"type": "String"
-					},
-					{
-						"name": "capacidad_mesas",
-						"type": "String"
-					},
-					{
-						"name": "tiene_delivery",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sa_omni_canal')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/sql_clientes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1173,6 +1109,55 @@
 				"typeProperties": {
 					"schema": "ventas_omnicanal",
 					"table": "promociones"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sql_omni_canal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sql_sucursales')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_omni_canal",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "sucursal_id",
+						"type": "varchar"
+					},
+					{
+						"name": "nombre_sucursal",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ciudad",
+						"type": "nvarchar"
+					},
+					{
+						"name": "zona",
+						"type": "nvarchar"
+					},
+					{
+						"name": "formato",
+						"type": "nvarchar"
+					},
+					{
+						"name": "fecha_apertura",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "ventas_omnicanal",
+					"table": "sucursales"
 				}
 			},
 			"dependsOn": [

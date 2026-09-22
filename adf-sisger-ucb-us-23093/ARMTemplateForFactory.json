@@ -37,43 +37,60 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/sa_omni_canal')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/calificaciones_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sa_omni_canal",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "csv"
+				},
 				"annotations": [],
-				"type": "AzureBlobFS",
+				"type": "DelimitedText",
 				"typeProperties": {
-					"url": "[parameters('sa_omni_canal_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('sa_omni_canal_accountKey')]"
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "calificaciones.csv",
+						"fileSystem": "raw"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "calificacion_id",
+						"type": "String"
+					},
+					{
+						"name": "pedido_id",
+						"type": "String"
+					},
+					{
+						"name": "cliente_id",
+						"type": "String"
+					},
+					{
+						"name": "fecha_calificacion",
+						"type": "String"
+					},
+					{
+						"name": "puntuacion",
+						"type": "String"
+					},
+					{
+						"name": "comentario",
+						"type": "String"
 					}
-				}
+				]
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sql_omni_canal')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('sql_omni_canal_properties_typeProperties_server')]",
-					"database": "[parameters('sql_omni_canal_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('sql_omni_canal_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('sql_omni_canal_password')]"
-					}
-				}
-			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sa_omni_canal')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/clientes_csv')]",
@@ -127,62 +144,6 @@
 					},
 					{
 						"name": "segmento",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sa_omni_canal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/calificaciones_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sa_omni_canal",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "csv"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "calificaciones.csv",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "calificacion_id",
-						"type": "String"
-					},
-					{
-						"name": "pedido_id",
-						"type": "String"
-					},
-					{
-						"name": "cliente_id",
-						"type": "String"
-					},
-					{
-						"name": "fecha_calificacion",
-						"type": "String"
-					},
-					{
-						"name": "puntuacion",
-						"type": "String"
-					},
-					{
-						"name": "comentario",
 						"type": "String"
 					}
 				]
@@ -748,70 +709,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/sucursales_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sa_omni_canal",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "csv"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "sucursales.csv",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "sucursal_id",
-						"type": "String"
-					},
-					{
-						"name": "restaurante_id",
-						"type": "String"
-					},
-					{
-						"name": "nombre_sucursal",
-						"type": "String"
-					},
-					{
-						"name": "ciudad",
-						"type": "String"
-					},
-					{
-						"name": "zona",
-						"type": "String"
-					},
-					{
-						"name": "direccion",
-						"type": "String"
-					},
-					{
-						"name": "capacidad_mesas",
-						"type": "String"
-					},
-					{
-						"name": "tiene_delivery",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sa_omni_canal')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/sql_clientes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1289,6 +1186,285 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/sql_omni_canal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sucursales_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sa_omni_canal",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "csv"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "sucursales.csv",
+						"fileSystem": "raw"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "sucursal_id",
+						"type": "String"
+					},
+					{
+						"name": "restaurante_id",
+						"type": "String"
+					},
+					{
+						"name": "nombre_sucursal",
+						"type": "String"
+					},
+					{
+						"name": "ciudad",
+						"type": "String"
+					},
+					{
+						"name": "zona",
+						"type": "String"
+					},
+					{
+						"name": "direccion",
+						"type": "String"
+					},
+					{
+						"name": "capacidad_mesas",
+						"type": "String"
+					},
+					{
+						"name": "tiene_delivery",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sa_omni_canal')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sa_omni_canal')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('sa_omni_canal_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('sa_omni_canal_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sql_omni_canal')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('sql_omni_canal_properties_typeProperties_server')]",
+					"database": "[parameters('sql_omni_canal_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('sql_omni_canal_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('sql_omni_canal_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_clientes')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "clientes_csv",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "sql_clientes",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          cliente_id as string,",
+						"          nombre as string,",
+						"          email as string,",
+						"          telefono as string,",
+						"          ciudad as string,",
+						"          fecha_registro as string,",
+						"          segmento as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(nombre = initCap(trim(nombre)),",
+						"          ciudad = initCap(trim(ciudad)),",
+						"          email = lower(trim(email)),",
+						"          telefono = trim(telefono),",
+						"          fecha_registro = toDate(fecha_registro, 'yyyy-MM-dd')) ~> derivedColumn1",
+						"derivedColumn1 split(isNull(cliente_id) || isNull(nombre) || isNull(email) || isNull(ciudad),",
+						"     disjoint: false) ~> split1@(rechazados, validos)",
+						"split1@validos sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          cliente_id as string,",
+						"          nombre as string,",
+						"          ciudad as string,",
+						"          segmento as string,",
+						"          fecha_registro as date,",
+						"          edad as integer,",
+						"          nivel_fidelidad as string,",
+						"          email as string,",
+						"          telefono as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          cliente_id,",
+						"          nombre,",
+						"          ciudad,",
+						"          segmento,",
+						"          fecha_registro,",
+						"          email,",
+						"          telefono",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/clientes_csv')]",
+				"[concat(variables('factoryId'), '/datasets/sql_clientes')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_sucursal')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "sucursales_csv",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "sql_sucursales",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          sucursal_id as string,",
+						"          restaurante_id as string,",
+						"          nombre_sucursal as string,",
+						"          ciudad as string,",
+						"          zona as string,",
+						"          direccion as string,",
+						"          capacidad_mesas as string,",
+						"          tiene_delivery as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(ciudad = initCap(trim(ciudad)),",
+						"          zona = initCap(trim(zona)),",
+						"          restaurante_id = trim(restaurante_id)) ~> derivedColumn1",
+						"derivedColumn1 split(isNull(sucursal_id) || isNull(nombre_sucursal) || isNull(ciudad) || isNull(restaurante_id),",
+						"     disjoint: false) ~> split1@(rechazados, validos)",
+						"split1@validos sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          sucursal_id as string,",
+						"          nombre_sucursal as string,",
+						"          ciudad as string,",
+						"          zona as string,",
+						"          formato as string,",
+						"          fecha_apertura as date",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          sucursal_id,",
+						"          nombre_sucursal,",
+						"          ciudad,",
+						"          zona,",
+						"          formato = capacidad_mesas",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/sucursales_csv')]",
+				"[concat(variables('factoryId'), '/datasets/sql_sucursales')]"
 			]
 		}
 	]
