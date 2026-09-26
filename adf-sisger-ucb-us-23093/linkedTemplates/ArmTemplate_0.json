@@ -748,6 +748,56 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/sql_calificaciones')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_omni_canal",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "calificacion_id",
+						"type": "varchar"
+					},
+					{
+						"name": "venta_id",
+						"type": "varchar"
+					},
+					{
+						"name": "cliente_id",
+						"type": "varchar"
+					},
+					{
+						"name": "fecha_calificacion",
+						"type": "date"
+					},
+					{
+						"name": "puntuacion",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "comentario",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "ventas_omnicanal",
+					"table": "calificaciones"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sql_omni_canal')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sql_clientes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -930,6 +980,68 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/sql_entregas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sql_omni_canal",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "sql"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "entrega_id",
+						"type": "varchar"
+					},
+					{
+						"name": "venta_id",
+						"type": "varchar"
+					},
+					{
+						"name": "repartidor_id",
+						"type": "varchar"
+					},
+					{
+						"name": "hora_salida",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "hora_entrega",
+						"type": "datetime2",
+						"scale": 0
+					},
+					{
+						"name": "tiempo_entrega_min",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "distancia_km",
+						"type": "decimal",
+						"precision": 6,
+						"scale": 2
+					},
+					{
+						"name": "estado_entrega",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "ventas_omnicanal",
+					"table": "entregas"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sql_omni_canal')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sql_inventario_diario')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -996,7 +1108,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/sql_productos')]",
+			"name": "[concat(parameters('factoryName'), '/sql_pagos')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1011,153 +1123,35 @@
 				"type": "AzureSqlTable",
 				"schema": [
 					{
-						"name": "producto_id",
+						"name": "pago_id",
 						"type": "varchar"
 					},
 					{
-						"name": "nombre_producto",
+						"name": "venta_id",
+						"type": "varchar"
+					},
+					{
+						"name": "fecha_pago",
+						"type": "date"
+					},
+					{
+						"name": "metodo_pago",
 						"type": "nvarchar"
 					},
 					{
-						"name": "categoria",
+						"name": "estado_pago",
 						"type": "nvarchar"
 					},
 					{
-						"name": "marca",
-						"type": "nvarchar"
-					},
-					{
-						"name": "precio_lista",
+						"name": "monto_pagado",
 						"type": "decimal",
 						"precision": 12,
 						"scale": 2
-					},
-					{
-						"name": "costo_unitario",
-						"type": "decimal",
-						"precision": 12,
-						"scale": 2
-					},
-					{
-						"name": "proveedor",
-						"type": "nvarchar"
-					},
-					{
-						"name": "estado_producto",
-						"type": "nvarchar"
 					}
 				],
 				"typeProperties": {
 					"schema": "ventas_omnicanal",
-					"table": "productos"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sql_omni_canal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sql_promociones')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sql_omni_canal",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "sql"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "promocion_id",
-						"type": "varchar"
-					},
-					{
-						"name": "nombre_promocion",
-						"type": "nvarchar"
-					},
-					{
-						"name": "tipo_descuento",
-						"type": "nvarchar"
-					},
-					{
-						"name": "valor_descuento",
-						"type": "decimal",
-						"precision": 8,
-						"scale": 2
-					},
-					{
-						"name": "fecha_inicio",
-						"type": "date"
-					},
-					{
-						"name": "fecha_fin",
-						"type": "date"
-					},
-					{
-						"name": "canal_aplicable",
-						"type": "nvarchar"
-					},
-					{
-						"name": "estado_promocion",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "ventas_omnicanal",
-					"table": "promociones"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sql_omni_canal')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sql_sucursales')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sql_omni_canal",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "sql"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "sucursal_id",
-						"type": "varchar"
-					},
-					{
-						"name": "nombre_sucursal",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ciudad",
-						"type": "nvarchar"
-					},
-					{
-						"name": "zona",
-						"type": "nvarchar"
-					},
-					{
-						"name": "formato",
-						"type": "nvarchar"
-					},
-					{
-						"name": "fecha_apertura",
-						"type": "date"
-					}
-				],
-				"typeProperties": {
-					"schema": "ventas_omnicanal",
-					"table": "sucursales"
+					"table": "pagos"
 				}
 			},
 			"dependsOn": [
